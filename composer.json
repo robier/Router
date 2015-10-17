@@ -1,0 +1,17 @@
+{
+    "name": "robier/router",
+    "description": "Very fast and light weight php router",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robert Premar",
+            "email": "robert.premar@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Robier\\Router\\": "src/"
+        }
+    }
+}
