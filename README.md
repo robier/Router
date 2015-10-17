@@ -181,7 +181,33 @@ Todo
 Benchmarking
 ------------
 
-work in progress
+Worst case matching results, last and unknown route against 1000 routes.
+
+Test Name | Results | Time | + Interval | Change
+--------- | ------- | ---- | ---------- | ------
+Robier/Router - unknown route (1000 routes) | 988 | 0.0000143068 | +0.0000000000 | baseline
+Robier/Router - last route (1000 routes) | 999 | 0.0000483677 | +0.0000340609 | 238% slower
+FastRoute - unknown route (1000 routes) | 967 | 0.0002400878 | +0.0002257809 | 1578% slower
+FastRoute - last route (1000 routes) | 999 | 0.0002518330 | +0.0002375262 | 1660% slower
+Symfony2 Dumped - unknown route (1000 routes) | 998 | 0.0006161809 | +0.0006018741 | 4207% slower
+Symfony2 Dumped - last route (1000 routes) | 993 | 0.0006666702 | +0.0006523634 | 4560% slower
+Pux PHP - unknown route (1000 routes) | 996 | 0.0014638989 | +0.0014495921 | 10132% slower
+Pux PHP - last route (1000 routes) | 998 | 0.0015648818 | +0.0015505750 | 10838% slower
+Symfony2 - unknown route (1000 routes) | 998 | 0.0030423162 | +0.0030280093 | 21165% slower
+Symfony2 - last route (1000 routes) | 993 | 0.0030943178 | +0.0030800110 | 21528% slower
+Aura v2 - last route (1000 routes) | 996 | 0.0824833132 | +0.0824690064 | 576432% slower
+Aura v2 - unknown route (1000 routes) | 996 | 0.0938626260 | +0.0938483192 | 655969% slower
+
+Best case matching results, first route against 1000 routes.
+
+Test Name | Results | Time | + Interval | Change
+--------- | ------- | ---- | ---------- | ------
+Pux PHP - first route | 985 | 0.0000178673 | +0.0000000000 | baseline
+FastRoute - first route | 980 | 0.0000238312 | +0.0000059638 | 33% slower
+Symfony2 Dumped - first route | 987 | 0.0000355971 | +0.0000177297 | 99% slower
+Robier/Router - first route | 998 | 0.0000480750 | +0.0000302077 | 169% slower
+Symfony2 - first route | 999 | 0.0001610693 | +0.0001432019 | 801% slower
+Aura v2 - first route | 978 | 0.0002484000 | +0.0002305326 | 1290% slower
 
 How it's so fast?
 -----------------
