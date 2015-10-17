@@ -6,8 +6,6 @@ use Robier\Router\Builder\UrlBuilder;
 use Robier\Router\Contract\Exception\SetRouteNameExceptionInterface;
 use Robier\Router\Exception\ParserNotSetException;
 use Robier\Router\Exception\URLGeneratorDataEmptyException;
-use Robier\Router\Exception\URLGeneratorDataMissingException;
-use Robier\Router\Exception\ValueDoesNotMatchTheRegexException;
 
 /**
  * Class Route
@@ -215,13 +213,13 @@ class Route
             return new URL($host, $this->url, $data);
         }
 
-        if (empty($data)){
+        if (empty($data)) {
             throw new URLGeneratorDataEmptyException($this->name);
         }
 
-        try{
+        try {
             $urlBuilder = new UrlBuilder($this->getRegexArray(), $data);
-        }catch (SetRouteNameExceptionInterface $e){
+        } catch (SetRouteNameExceptionInterface $e) {
             throw $e->setRouteName($this->getName());
         }
 

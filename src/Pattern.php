@@ -43,14 +43,14 @@ class Pattern implements PatternInterface
      */
     public function get($name, $strict = false)
     {
-        if($strict){
-            if(!isset($this->strict[$name])){
-                throw new \InvalidArgumentException('Strict pattern '.$name.' does not exist!');
+        if ($strict) {
+            if (!isset($this->strict[$name])) {
+                throw new \InvalidArgumentException('Strict pattern ' . $name . ' does not exist!');
             }
             return $this->strict[$name];
-        }else{
-            if(!isset($this->combined[$name])){
-                throw new \InvalidArgumentException('Combined pattern '.$name.' does not exist!');
+        } else {
+            if (!isset($this->combined[$name])) {
+                throw new \InvalidArgumentException('Combined pattern ' . $name . ' does not exist!');
             }
             return $this->combined[$name];
         }
@@ -66,14 +66,14 @@ class Pattern implements PatternInterface
      */
     public function register($name, $pattern, $strict = false)
     {
-        if($strict){
-            if(isset($this->strict[$name])){
-                throw new \InvalidArgumentException('Strict pattern with name '.$name.' already exists!');
+        if ($strict) {
+            if (isset($this->strict[$name])) {
+                throw new \InvalidArgumentException('Strict pattern with name ' . $name . ' already exists!');
             }
             $this->strict[$name] = $pattern;
-        }else{
-            if(isset($this->combined[$name])){
-                throw new \InvalidArgumentException('Combined pattern with name '.$name.' already exists!');
+        } else {
+            if (isset($this->combined[$name])) {
+                throw new \InvalidArgumentException('Combined pattern with name ' . $name . ' already exists!');
             }
             $this->combined[$name] = $pattern;
         }
@@ -89,12 +89,12 @@ class Pattern implements PatternInterface
      */
     public function remove($name, $strict = false)
     {
-        if($strict){
-            if(isset($this->strict[$name])){
+        if ($strict) {
+            if (isset($this->strict[$name])) {
                 unset($this->strict[$name]);
             }
-        }else{
-            if(isset($this->combined[$name])){
+        } else {
+            if (isset($this->combined[$name])) {
                 unset($this->combined[$name]);
             }
         }
@@ -111,7 +111,7 @@ class Pattern implements PatternInterface
      */
     public function exist($name, $strict = false)
     {
-        if($strict){
+        if ($strict) {
             return isset($this->strict[$name]);
         }
         return isset($this->combined[$name]);
@@ -125,7 +125,7 @@ class Pattern implements PatternInterface
      */
     public function getAll($strict = false)
     {
-        if($strict){
+        if ($strict) {
             return $this->strict;
         }
         return $this->combined;

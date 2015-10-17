@@ -23,7 +23,7 @@ class URL
     public function __construct($host, $path = null, array $query = [])
     {
         $this->setHost($host);
-        if(!empty($path)){
+        if (!empty($path)) {
             $this->setPath($path);
         }
         $this->query = $query;
@@ -130,23 +130,23 @@ class URL
     {
         $return = [];
 
-        if($this->isSecured()){
+        if ($this->isSecured()) {
             $return['scheme'] = 'https';
-        }else{
+        } else {
             $return['scheme'] = 'http';
         }
 
         $return['host'] = $this->getHost();
 
-        if(!empty($this->path)){
+        if (!empty($this->path)) {
             $return['path'] = $this->getPath();
         }
 
-        if(!empty($this->query)){
+        if (!empty($this->query)) {
             $return['query'] = http_build_query($this->getQuery());
         }
 
-        if(!empty($this->fragment)){
+        if (!empty($this->fragment)) {
             $return['fragment'] = $this->getFragment();
         }
 
@@ -160,15 +160,15 @@ class URL
 
     protected function getUrl($type = null)
     {
-        if(null === $type){
+        if (null === $type) {
             $type = static::$default;
         }
 
         switch ($type) {
             case self::ABSOLUTE_URL:
-                return $this->getProtocol().'://'.$this->getCredentials().$this->host;
+                return $this->getProtocol() . '://' . $this->getCredentials() . $this->host;
             case self::NETWORK_URL:
-                return '//'.$this->getCredentials().$this->host;
+                return '//' . $this->getCredentials() . $this->host;
             case self::ABSOLUTE_PATH:
                 return '';
         }
@@ -177,8 +177,8 @@ class URL
 
     protected function getCredentials()
     {
-        if($this->username && $this->password){
-            return $this->username.':'.$this->password.'@';
+        if ($this->username && $this->password) {
+            return $this->username . ':' . $this->password . '@';
         }
         return '';
     }
@@ -187,16 +187,16 @@ class URL
     {
         $url = $this->getUrl($type);
 
-        if(!empty($this->path)){
-            $url .= '/'.$this->path;
+        if (!empty($this->path)) {
+            $url .= '/' . $this->path;
         }
 
-        if(!empty($this->query)){
-            $url .= '?'.http_build_query($this->query);
+        if (!empty($this->query)) {
+            $url .= '?' . http_build_query($this->query);
         }
 
-        if(!empty($this->fragment)){
-            $url .= '#'.$this->fragment;
+        if (!empty($this->fragment)) {
+            $url .= '#' . $this->fragment;
         }
 
         return $url;

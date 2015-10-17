@@ -12,27 +12,27 @@ class UrlBuilder
     public function __construct(array $regexUrl, array $data = [])
     {
         $path = '';
-        foreach($regexUrl as $name => $regex){
+        foreach ($regexUrl as $name => $regex) {
             // we are checking if $name is int, if it is then this is not a regex
-            if((int)$name === $name){
-                $path .= '/'.$regex;
+            if ((int)$name === $name) {
+                $path .= '/' . $regex;
                 continue;
             }
 
-            if(!isset($data[$name])){
+            if (!isset($data[$name])) {
                 throw new URLGeneratorDataMissingException($name);
             }
 
             $regex = new RegexBuilder($regex);
-            if(preg_match($regex, $data[$name])){
-                $path .= '/'.$data[$name];
+            if (preg_match($regex, $data[$name])) {
+                $path .= '/' . $data[$name];
                 unset($data[$name]);
-            }else{
+            } else {
                 throw new ValueDoesNotMatchTheRegexException($data[$name], (string)$regex);
             }
         }
 
-        if(!empty($data)){
+        if (!empty($data)) {
             $this->data = $data;
         }
 

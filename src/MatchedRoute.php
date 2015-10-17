@@ -28,7 +28,7 @@ class MatchedRoute
     public function __construct(Route $route, array $matchedData = null)
     {
         $this->route = $route;
-        if(!empty($matchedData)){
+        if (!empty($matchedData)) {
             $this->matchedData = $matchedData;
         }
     }

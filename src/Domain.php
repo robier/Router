@@ -88,24 +88,24 @@ class Domain implements DomainInterface
     {
         $route->setParser($this->parser);
 
-        $hash = sha1($route->getMethod().$route->getUrl());
-        if(isset($this->allRoutes[$hash])){
-            throw new \InvalidArgumentException('Duplicate route url ' . $route->getMethod() .' '. $route->getUrl());
+        $hash = sha1($route->getMethod() . $route->getUrl());
+        if (isset($this->allRoutes[$hash])) {
+            throw new \InvalidArgumentException('Duplicate route url ' . $route->getMethod() . ' ' . $route->getUrl());
         }
         $this->allRoutes[$hash] = $route;
 
-        if($route->hasName()){
-            if(isset($this->namedRoutes[$route->getName()])){
-                throw new \InvalidArgumentException('Duplicate route name '. $route->getName());
+        if ($route->hasName()) {
+            if (isset($this->namedRoutes[$route->getName()])) {
+                throw new \InvalidArgumentException('Duplicate route name ' . $route->getName());
             }
             $this->namedRoutes[$route->getName()] = $route;
         }
-        if(!$route->hasRegex()){
-            if(isset($this->literalRoutes[$this->getLiteralRouteKey($route->getUrl(), $route->getMethod())])){
-                throw new \InvalidArgumentException('Duplicate route url '. $route->getUrl());
+        if (!$route->hasRegex()) {
+            if (isset($this->literalRoutes[$this->getLiteralRouteKey($route->getUrl(), $route->getMethod())])) {
+                throw new \InvalidArgumentException('Duplicate route url ' . $route->getUrl());
             }
             $this->literalRoutes[$route->getMethod() . ' ' . $route->getUrl()] = $route;
-        }else{
+        } else {
             $this->regexRoutes[$route->getStaticPrefix()][$route->getMethod()][] = $route;
         }
 
@@ -129,9 +129,9 @@ class Domain implements DomainInterface
         $explodedUrl = explode('/', trim($url, '/'));
 
         $i = count($explodedUrl);
-        while($i > 0){
+        while ($i > 0) {
             unset($explodedUrl[$i]);
-            $variations[] = '/'.implode('/', $explodedUrl).'/';
+            $variations[] = '/' . implode('/', $explodedUrl) . '/';
             --$i;
         }
         $variations[] = '/';
@@ -147,7 +147,7 @@ class Domain implements DomainInterface
      */
     public function get($routeName)
     {
-        if(isset($this->namedRoutes[$routeName])){
+        if (isset($this->namedRoutes[$routeName])) {
             return $this->namedRoutes[$routeName];
         }
         throw new RouteNotFoundException($routeName);
@@ -178,19 +178,19 @@ class Domain implements DomainInterface
         // checks literal routs first
         $literalRouteKey = $this->getLiteralRouteKey($url, $method);
         /** @var Route $route */
-        if(isset($this->literalRoutes[$literalRouteKey])){
+        if (isset($this->literalRoutes[$literalRouteKey])) {
             return new MatchedRoute($this->literalRoutes[$literalRouteKey]);
         }
 
         // we didn't find route in literals so lets check regex routes
         $urlVariations = $this->getUrlVariations($url);
-        foreach($urlVariations as $urlVariation){
-            if(!isset($this->regexRoutes[$urlVariation][$method])){
+        foreach ($urlVariations as $urlVariation) {
+            if (!isset($this->regexRoutes[$urlVariation][$method])) {
                 continue;
             }
 
-            foreach($this->regexRoutes[$urlVariation][$method] as $route){
-                if(!$route->isMatch($url, $method, $matchedData)){
+            foreach ($this->regexRoutes[$urlVariation][$method] as $route) {
+                if (!$route->isMatch($url, $method, $matchedData)) {
                     continue;
                 }
                 return new MatchedRoute($route, $matchedData);

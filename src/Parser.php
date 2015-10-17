@@ -43,22 +43,22 @@ class Parser implements ParserInterface
 
         $returnParts = [];
 
-        foreach($urlParts as $urlPart){
+        foreach ($urlParts as $urlPart) {
             $optionalFlag = false;
             $length = strlen($urlPart);
             $name = null;
 
-            if(empty($urlPart)){
+            if (empty($urlPart)) {
                 continue;
             }
 
             // check if current part has regex
-            if($urlPart[0] != '['){
+            if ($urlPart[0] != '[') {
                 $returnParts[] = $urlPart;
                 continue;
             }
 
-            if($urlPart[$length-1] == '?'){
+            if ($urlPart[$length - 1] == '?') {
                 $optionalFlag = true;
                 --$length;
                 $urlPart = substr($urlPart, 0, -1);
@@ -70,22 +70,22 @@ class Parser implements ParserInterface
 
             $name = $parts[0];
 
-            if(empty($name)){
-                throw new \InvalidArgumentException('Name not provided for '.$urlPart.' in '.$url);
+            if (empty($name)) {
+                throw new \InvalidArgumentException('Name not provided for ' . $urlPart . ' in ' . $url);
             }
 
-            if(ctype_digit($name)){
+            if (ctype_digit($name)) {
                 throw new \InvalidArgumentException('Name should be alphanumeric!');
             }
 
-            if(isset($returnParts[$name])){
-                throw new \InvalidArgumentException('Duplicate pattern name in '.$url);
+            if (isset($returnParts[$name])) {
+                throw new \InvalidArgumentException('Duplicate pattern name in ' . $url);
             }
 
             unset($parts[0]);
 
             // checking if we have only parameter name in route path
-            if(empty($parts)){
+            if (empty($parts)) {
                 // we want all characters until first /
                 $returnParts[$name] = $this->generatePattern('[^/.]', $quantifier, $optionalFlag);
                 continue;
@@ -96,7 +96,7 @@ class Parser implements ParserInterface
             // lets parse content inside ()
             // ie. if we have route like /test/[name:(foo|bar)]
             // then only possible route can be /test/foo and /test/bar
-            if($string != ($trimmed = trim($string, '()'))){
+            if ($string != ($trimmed = trim($string, '()'))) {
                 $returnParts[$name] = $this->generatePattern($trimmed, '', $optionalFlag);
                 continue;
             }
@@ -104,24 +104,24 @@ class Parser implements ParserInterface
             // lets parse content inside <>
             // so everything that is inside <> will be only copy/paste to regex without
             // modifications
-            if($string != ($trimmed = trim($string, '<>'))){
+            if ($string != ($trimmed = trim($string, '<>'))) {
                 $returnParts[$name] = $this->generatePattern($trimmed, '', $optionalFlag);
                 continue;
             }
 
             // checking if we need to build regex from patterns
             // also deciding is it strict or combined parameter
-            if(!(strpos($string, '-') !== false || strpos($string, '|') !== false)){
-                if(!$this->pattern->exist($string) && !$this->pattern->exist($string, true)){
-                    throw new \LogicException('Registered pattern with name '.$string.' does not exist');
+            if (!(strpos($string, '-') !== false || strpos($string, '|') !== false)) {
+                if (!$this->pattern->exist($string) && !$this->pattern->exist($string, true)) {
+                    throw new \LogicException('Registered pattern with name ' . $string . ' does not exist');
                 }
-                if($this->pattern->exist($string, true)){
+                if ($this->pattern->exist($string, true)) {
                     $returnParts[$name] = $this->generatePattern($this->pattern->get($string, true), '', $optionalFlag);
-                }else{
-                    $returnParts[$name] = $this->generatePattern('['.$this->pattern->get($string).']', $quantifier, $optionalFlag);
+                } else {
+                    $returnParts[$name] = $this->generatePattern('[' . $this->pattern->get($string) . ']', $quantifier, $optionalFlag);
                 }
                 continue;
-            }else{
+            } else {
                 $returnParts[$name] = $this->generatePattern($this->generateCombinedPatterns($string, $quantifier), '', $optionalFlag);
             }
         }
@@ -148,7 +148,7 @@ class Parser implements ParserInterface
      */
     public function getStaticPrefix($url)
     {
-        if(($position = strpos($url, '[')) === false){
+        if (($position = strpos($url, '[')) === false) {
             return $url;
         }
 
@@ -170,7 +170,7 @@ class Parser implements ParserInterface
          *  ? equivalent to {0,1}
          */
         $quantifier = '+';
-        if($urlPart[$length-1] != '}') {
+        if ($urlPart[$length - 1] != '}') {
             return $quantifier;
         }
 
@@ -179,21 +179,21 @@ class Parser implements ParserInterface
 
         $lengthParts = explode(',', $parts[1]);
 
-        if(count($lengthParts) == 1){
-            $quantifier = '{'.$lengthParts[0].'}';
-        }else{
-            if($lengthParts[0] == $lengthParts[1]){
-                $quantifier = '{'.$lengthParts[0].'}';
-            }else{
+        if (count($lengthParts) == 1) {
+            $quantifier = '{' . $lengthParts[0] . '}';
+        } else {
+            if ($lengthParts[0] == $lengthParts[1]) {
+                $quantifier = '{' . $lengthParts[0] . '}';
+            } else {
                 // http://php.net/manual/en/regexp.reference.repetition.php
-                if($lengthParts[0] == 0 && empty($lengthParts[1])){
+                if ($lengthParts[0] == 0 && empty($lengthParts[1])) {
                     $quantifier = '*';
-                }elseif($lengthParts[0] == 1 && empty($lengthParts[1])){
+                } elseif ($lengthParts[0] == 1 && empty($lengthParts[1])) {
                     $quantifier = '+';
-                }elseif($lengthParts[0] == 0 && $lengthParts[1] == 1){
+                } elseif ($lengthParts[0] == 0 && $lengthParts[1] == 1) {
                     $quantifier = '?';
-                }else{
-                    $quantifier = '{'.(int)$lengthParts[0].','.$lengthParts[1].'}';
+                } else {
+                    $quantifier = '{' . (int)$lengthParts[0] . ',' . $lengthParts[1] . '}';
                 }
             }
         }
@@ -212,10 +212,10 @@ class Parser implements ParserInterface
      */
     protected function generatePattern($pattern, $quantifier = '+', $optional = false)
     {
-        if($optional){
-            return '('.$pattern.$quantifier.')?';
+        if ($optional) {
+            return '(' . $pattern . $quantifier . ')?';
         }
-        return $pattern.$quantifier;
+        return $pattern . $quantifier;
     }
 
     /**
@@ -233,30 +233,30 @@ class Parser implements ParserInterface
         $part = '';
         $connected = true;
 
-        foreach($chars as $char){
-            if($char == '-'){
+        foreach ($chars as $char) {
+            if ($char == '-') {
                 $pattern .= $this->pattern->get($part);
                 $part = '';
                 $connected = true;
-            }elseif($char == '|'){
+            } elseif ($char == '|') {
                 $pattern .= $this->pattern->get($part);
-                $combinedPattern .= '['.$pattern.']'.$quantifier.'|';
+                $combinedPattern .= '[' . $pattern . ']' . $quantifier . '|';
                 $pattern = '';
                 $part = '';
                 $connected = false;
-            }else{
+            } else {
                 $part .= $char;
             }
         }
 
-        if($connected){
+        if ($connected) {
             $pattern .= $this->pattern->get($part);
-            $combinedPattern .= '['.$pattern.']'.$quantifier;
-            $combinedPattern = '('.$combinedPattern.')';
-        }else{
+            $combinedPattern .= '[' . $pattern . ']' . $quantifier;
+            $combinedPattern = '(' . $combinedPattern . ')';
+        } else {
             $pattern .= $this->pattern->get($part);
-            $combinedPattern .= '['.$pattern.']'.$quantifier;
-            $combinedPattern = '('.$combinedPattern.')';
+            $combinedPattern .= '[' . $pattern . ']' . $quantifier;
+            $combinedPattern = '(' . $combinedPattern . ')';
         }
 
         return $combinedPattern;

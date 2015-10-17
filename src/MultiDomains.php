@@ -53,7 +53,7 @@ class MultiDomains implements DomainInterface
     {
         $this->matchPriorities = $matchPriorities;
 
-        if($setAlsoAsGeneratePriority){
+        if ($setAlsoAsGeneratePriority) {
             $this->generatePriorities = $matchPriorities;
         }
 
@@ -69,7 +69,7 @@ class MultiDomains implements DomainInterface
     {
         $this->generatePriorities = $generatePriorities;
 
-        if($setAlsoAsMatchPriority){
+        if ($setAlsoAsMatchPriority) {
             $this->matchPriorities = $generatePriorities;
         }
 
@@ -83,7 +83,7 @@ class MultiDomains implements DomainInterface
      */
     protected function getMatchPriorities()
     {
-        if(empty($this->matchPriorities)){
+        if (empty($this->matchPriorities)) {
             return array_keys($this->domains);
         }
         return $this->matchPriorities;
@@ -96,7 +96,7 @@ class MultiDomains implements DomainInterface
      */
     protected function getGeneratePriorities()
     {
-        if(empty($this->generatePriorities)){
+        if (empty($this->generatePriorities)) {
             return array_keys($this->domains);
         }
         return $this->generatePriorities;
@@ -124,7 +124,7 @@ class MultiDomains implements DomainInterface
      */
     public function add($name, DomainInterface $collection)
     {
-        if(isset($this->domains[$name])){
+        if (isset($this->domains[$name])) {
             throw new DuplicateDomainNameException($name);
         }
 
@@ -163,7 +163,7 @@ class MultiDomains implements DomainInterface
                 throw new DomainDoesNotExistException($collectionName);
             }
 
-            if($match = $this->domains[$collectionName]->match($url, $method)){
+            if ($match = $this->domains[$collectionName]->match($url, $method)) {
                 return $match;
             }
         }
@@ -235,11 +235,11 @@ class MultiDomains implements DomainInterface
             }
 
             if ($this->domains[$collectionName]->has($routeName)) {
-                try{
+                try {
                     return $this->domains[$collectionName]->generate($routeName, $data);
 
                     // catch exceptions and add domain name
-                }catch (SetDomainNameExceptionInterface $e){
+                } catch (SetDomainNameExceptionInterface $e) {
                     throw $e->setDomainName($collectionName);
                 }
             }

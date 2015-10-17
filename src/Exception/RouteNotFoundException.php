@@ -19,9 +19,9 @@ class RouteNotFoundException extends RouterException implements SetDomainNameExc
     {
         $name = (array)$name;
 
-        if(count($name) == 1){
+        if (count($name) == 1) {
             $domains = 'domain ';
-        }else{
+        } else {
             $domains = 'domains ';
         }
 

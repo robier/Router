@@ -8,7 +8,7 @@ namespace Robier\Router\Builder;
  */
 class RegexBuilder
 {
-    static public $delimiterList = ['&','%','#','"','!','='];
+    static public $delimiterList = ['&', '%', '#', '"', '!', '='];
     /**
      * @var string Generated regex
      */
@@ -26,11 +26,11 @@ class RegexBuilder
         $regex = (array)$regex;
 
         $this->value .= '^';
-        foreach($regex as $key=>$value){
-            if((int)$key === $key){
-                $this->value .= $delimiter.$value;
-            }else{
-                $this->value .= $delimiter.'(?<'.$key.'>'.$value.')';
+        foreach ($regex as $key => $value) {
+            if ((int)$key === $key) {
+                $this->value .= $delimiter . $value;
+            } else {
+                $this->value .= $delimiter . '(?<' . $key . '>' . $value . ')';
             }
         }
         $this->value .= '$';
@@ -48,17 +48,17 @@ class RegexBuilder
         $boundary = null;
 
         // we are checking for chars that do not exist in pattern
-        foreach(self::$delimiterList as $char){
-            if(strpos($this->value, $char) === false){
+        foreach (self::$delimiterList as $char) {
+            if (strpos($this->value, $char) === false) {
                 $boundary = $char;
                 break;
             }
         }
-        if(null === $boundary){
+        if (null === $boundary) {
             throw new \LogicException('Could not add boundary characters to regex');
         }
 
-        $this->value = $boundary.$this->value.$boundary.'Uu';
+        $this->value = $boundary . $this->value . $boundary . 'Uu';
     }
 
     public function __toString()
