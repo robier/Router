@@ -1,6 +1,8 @@
 Router
 ======
 
+Still work in progress :)
+
 In hope to make fast routing system this library was build. It's so fast
 that caching would be an overhead and results wouldn't be so good :) 
 
@@ -174,8 +176,6 @@ definition.
 Todo
 ----
 
-- [ ] make possibility for any pattern inside URL definition to be optional
-- [ ] make specific exceptions
 - [ ] make better exceptions
 
 Benchmarking
