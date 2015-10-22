@@ -1,5 +1,7 @@
 <?php
 
+namespace Robier\Router\Exception;
+
 use Robier\Router\Contract\Exception\SetDomainNameExceptionInterface;
 use Robier\Router\Exception\RouterException;
 

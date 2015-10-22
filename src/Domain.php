@@ -3,7 +3,7 @@
 namespace Robier\Router;
 
 use Robier\Router\Contract\DomainInterface;
-use RouteNotFoundException;
+use Robier\Router\Exception\RouteNotFoundException;
 
 /**
  * Class Routes
